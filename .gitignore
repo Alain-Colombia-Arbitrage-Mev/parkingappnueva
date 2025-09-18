@@ -41,4 +41,7 @@ yarn-error.*
 
 # OS generated files
 Thumbs.db
-*.logandroid/
+*.log
+
+# Note: android and ios folders are included since this project has native code
+# Only exclude if using pure CNG/Prebuild workflow without native customizations
