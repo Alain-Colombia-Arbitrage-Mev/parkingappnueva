@@ -77,11 +77,14 @@ export default function VerificationScreen() {
   // TODO: Get current user ID from auth context
   const currentUserId = "dummy-user-id" as any;
   
-  const userDocuments = useQuery(api.storage.getUserDocuments,
-    currentUserId ? { userId: currentUserId } : "skip"
-  );
+  // TODO: Implement storage API
+  // const userDocuments = useQuery(api.storage.getUserDocuments,
+  //   currentUserId ? { userId: currentUserId } : "skip"
+  // );
 
-  const uploadDocument = useMutation(api.storage.saveFile);
+  // const uploadDocument = useMutation(api.storage.saveFile);
+  const userDocuments = null;
+  const uploadDocument = null;
   
   const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, DocumentUpload>>({});
   const [isUploading, setIsUploading] = useState<Record<string, boolean>>({});
@@ -194,7 +197,7 @@ export default function VerificationScreen() {
   const getDocumentStatus = (documentType: string) => {
     // Check if document exists in uploaded documents or user documents
     const uploaded = uploadedDocuments[documentType];
-    const existing = userDocuments?.find(doc => doc.documentType === documentType);
+    const existing = userDocuments?.find((doc: any) => doc.documentType === documentType);
     
     if (uploaded || existing) {
       const status = existing?.verificationStatus || 'pending';

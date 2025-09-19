@@ -34,7 +34,12 @@
       "Bash(npm run build:*)",
       "Read(//c/Users/alaindev2/Downloads/**)",
       "Bash(tree:*)",
-      "Bash(eas:*)"
+      "Bash(eas:*)",
+      "Bash(npm run start:*)",
+      "Bash(./gradlew:*)",
+      "Bash(set)",
+      "Bash(chmod:*)",
+      "Bash(export EXPO_USERNAME=guardcolombia@gmail.com)"
     ],
     "deny": [],
     "ask": []

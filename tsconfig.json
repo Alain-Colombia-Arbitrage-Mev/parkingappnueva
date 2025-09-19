@@ -43,6 +43,7 @@
   "exclude": [
     "node_modules",
     "convex_backup",
-    "Handyman Auction Mobile App2"
+    "Handyman Auction Mobile App2",
+    "google-functions/**/*"
   ]
 }

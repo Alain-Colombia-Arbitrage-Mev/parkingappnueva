@@ -4,6 +4,7 @@ import React from 'react';
 import { useAppStore } from '../index';
 import { socketService } from '../../services/socketService';
 import { Message } from '../types';
+import { Message as SocketMessage } from '../../services/socketService';
 
 export const socketIntegration = {
   // Initialize socket connection
@@ -46,7 +47,7 @@ export const socketIntegration = {
   },
 
   // Send message via socket
-  sendMessage(message: Omit<Message, 'id' | 'createdAt'>): void {
+  sendMessage(message: Omit<Message, 'id' | 'timestamp'>): void {
     console.log('📤 Sending message via socket:', message.conversationId);
     socketService.sendMessage(message);
   },
@@ -72,9 +73,17 @@ function setupSocketListeners(): void {
   const store = useAppStore.getState();
 
   // Listen for new messages
-  socketService.onNewMessage((message: Message) => {
+  socketService.onNewMessage((message: SocketMessage) => {
     console.log('📨 Received new message via socket:', message.id);
-    store.addMessage(message);
+    // Convert SocketMessage to store Message format
+    const storeMessage: Message = {
+      ...message,
+      timestamp: message.createdAt || Date.now(),
+      type: message.messageType,
+      isRead: message.isRead || false,
+      createdAt: message.createdAt || Date.now()
+    };
+    store.addMessage(storeMessage);
 
     // Add notification for new message
     store.addNotification({

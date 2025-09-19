@@ -124,10 +124,10 @@ export const useAppStore = create<AppStore>()(
               }
 
               // Restore notifications
-              if (cachedNotifications?.data) {
-                const unreadCount = cachedNotifications.data.filter((n: any) => !n.isRead).length;
+              if (cachedNotifications) {
+                const unreadCount = cachedNotifications.filter((n: any) => !n.isRead).length;
                 set((state) => {
-                  state.notifications = cachedNotifications.data;
+                  state.notifications = cachedNotifications;
                   state.unreadCount = unreadCount;
                 });
               }

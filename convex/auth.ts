@@ -202,8 +202,8 @@ export const getVerifiedHandymen = query({
 
     // Filtrar por categoría si se especifica
     if (args.category) {
-      handymen = handymen.filter(h => 
-        h.categories && h.categories.includes(args.category)
+      handymen = handymen.filter(h =>
+        h.categories && args.category && h.categories.includes(args.category)
       );
     }
 

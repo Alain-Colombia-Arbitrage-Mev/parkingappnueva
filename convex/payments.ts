@@ -55,15 +55,12 @@ export const addPaymentMethod = mutation({
     // Crear el nuevo método de pago
     const paymentMethodId = await ctx.db.insert("paymentMethods", {
       userId: args.userId,
-      type: args.type,
-      last4: args.last4,
-      brand: args.brand,
-      expiryMonth: args.expiryMonth,
-      expiryYear: args.expiryYear,
-      cardholderName: args.cardholderName,
-      bankName: args.bankName,
-      walletType: args.walletType,
-      email: args.email,
+      type: args.type === "card" ? "credit_card" : args.type,
+      lastFourDigits: args.last4 || "0000",
+      provider: args.brand || "unknown",
+      holderName: args.cardholderName || "Unknown",
+      expiryMonth: args.expiryMonth ? parseInt(args.expiryMonth.toString()) : undefined,
+      expiryYear: args.expiryYear ? parseInt(args.expiryYear.toString()) : undefined,
       isDefault: args.isDefault,
       isActive: true,
       createdAt: now,
@@ -136,6 +133,7 @@ export const setDefaultPaymentMethod = mutation({
 export const processPayment = mutation({
   args: {
     userId: v.id("users"),
+    handymanId: v.id("users"),
     jobId: v.id("jobs"),
     amount: v.number(),
     currency: v.string(),
@@ -155,15 +153,14 @@ export const processPayment = mutation({
     const now = Date.now();
 
     // Crear transacción
-    const transactionId = await ctx.db.insert("transactions", {
-      userId: args.userId,
+    const transactionId = await ctx.db.insert("payments", {
+      payerId: args.userId,
+      receiverId: args.handymanId,
       jobId: args.jobId,
       paymentMethodId: args.paymentMethodId,
       amount: args.amount,
       currency: args.currency,
       status: "pending",
-      type: "payment",
-      description: args.description,
       createdAt: now,
       updatedAt: now,
     });
@@ -174,13 +171,12 @@ export const processPayment = mutation({
     // Actualizar estado de transacción
     await ctx.db.patch(transactionId, {
       status: "completed",
-      processedAt: Date.now(),
       updatedAt: Date.now(),
     });
 
     // Actualizar estado del trabajo
     await ctx.db.patch(args.jobId, {
-      paymentStatus: "paid",
+      status: "completed",
       updatedAt: Date.now(),
     });
 
@@ -200,8 +196,8 @@ export const getUserTransactions = query({
   },
   handler: async (ctx: QueryCtx, args) => {
     let query = ctx.db
-      .query("transactions")
-      .withIndex("by_user", (q) => q.eq("userId", args.userId));
+      .query("payments")
+      .withIndex("by_payer", (q) => q.eq("payerId", args.userId));
 
     const transactions = await query.collect();
 
@@ -222,8 +218,8 @@ export const getUserTransactions = query({
           jobTitle: job?.title,
           paymentMethodInfo: paymentMethod ? {
             type: paymentMethod.type,
-            last4: paymentMethod.last4,
-            brand: paymentMethod.brand,
+            last4: paymentMethod.lastFourDigits,
+            brand: paymentMethod.provider,
           } : null,
         };
       })
@@ -236,7 +232,7 @@ export const getUserTransactions = query({
 // Solicitar reembolso
 export const requestRefund = mutation({
   args: {
-    transactionId: v.id("transactions"),
+    transactionId: v.id("payments"),
     reason: v.string(),
     amount: v.optional(v.number()), // Para reembolsos parciales
   },
@@ -254,16 +250,14 @@ export const requestRefund = mutation({
     const refundAmount = args.amount || transaction.amount;
 
     // Crear transacción de reembolso
-    const refundId = await ctx.db.insert("transactions", {
-      userId: transaction.userId,
+    const refundId = await ctx.db.insert("payments", {
+      payerId: transaction.receiverId, // El handyman devuelve al cliente
+      receiverId: transaction.payerId,
       jobId: transaction.jobId,
       paymentMethodId: transaction.paymentMethodId,
       amount: refundAmount,
       currency: transaction.currency,
       status: "pending",
-      type: "refund",
-      description: `Refund for transaction ${args.transactionId}: ${args.reason}`,
-      relatedTransactionId: args.transactionId,
       createdAt: now,
       updatedAt: now,
     });
@@ -291,8 +285,8 @@ export const getPaymentStats = query({
   args: { userId: v.id("users") },
   handler: async (ctx: QueryCtx, args) => {
     const transactions = await ctx.db
-      .query("transactions")
-      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .query("payments")
+      .withIndex("by_payer", (q) => q.eq("payerId", args.userId))
       .collect();
 
     const stats = {

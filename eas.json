@@ -8,8 +8,13 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
-      }
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "credentialsSource": "local"
     },
     "preview": {
       "distribution": "internal",
@@ -19,12 +24,17 @@
       },
       "env": {
         "EXPO_NO_CAPABILITY_SYNC": "1"
-      }
+      },
+      "credentialsSource": "local"
     },
     "production": {
       "android": {
         "buildType": "app-bundle"
-      }
+      },
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "credentialsSource": "local"
     }
   },
   "submit": {

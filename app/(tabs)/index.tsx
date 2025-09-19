@@ -272,7 +272,7 @@ export default function HomeScreen() {
         onRequestClose={() => setDetailsModalVisible(false)}
       >
         <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
+          <View style={styles.fullModalHeader}>
             <Text style={styles.modalTitle}>Detalles</Text>
             <TouchableOpacity 
               onPress={() => setDetailsModalVisible(false)}
@@ -561,7 +561,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
-  modalHeader: {
+  fullModalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

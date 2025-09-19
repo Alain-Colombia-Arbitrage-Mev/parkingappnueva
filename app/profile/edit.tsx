@@ -23,11 +23,12 @@ export default function EditProfileScreen() {
   // TODO: Get current user ID from auth context
   const currentUserId = "dummy-user-id" as any;
   
-  const userProfile = useQuery(api.profiles.getUserProfile, 
+  const userProfile = useQuery(api.users.getUser,
     currentUserId ? { userId: currentUserId } : "skip"
   );
-  
-  const updateProfile = useMutation(api.profiles.updateProfile);
+
+  // const updateProfile = useMutation(api.users.updateUser);
+  const updateProfile = null; // TODO: implement updateUser mutation
   
   const [formData, setFormData] = useState({
     name: '',
@@ -96,6 +97,9 @@ export default function EditProfileScreen() {
     setIsLoading(true);
     
     try {
+      if (!updateProfile) {
+        throw new Error('Update profile function not available');
+      }
       await updateProfile({
         userId: currentUserId,
         name: formData.name,

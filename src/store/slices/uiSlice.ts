@@ -38,7 +38,7 @@ export const createUISlice: StateCreator<
   ui: defaultUIState,
 
   // Actions
-  setLoading: (loading: boolean, message?: string) => {
+  setUILoading: (loading: boolean, message?: string) => {
     const { ui } = get();
     set({
       ui: {

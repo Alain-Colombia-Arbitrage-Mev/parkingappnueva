@@ -242,7 +242,7 @@ export interface SettingsActions {
 }
 
 export interface UIActions {
-  setLoading: (loading: boolean, message?: string) => void;
+  setUILoading: (loading: boolean, message?: string) => void;
   setError: (error: string | null) => void;
   openModal: (modal: keyof UIState['modals']) => void;
   closeModal: (modal: keyof UIState['modals']) => void;
