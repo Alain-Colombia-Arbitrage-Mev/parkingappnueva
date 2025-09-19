@@ -1,0 +1,63 @@
+# EAS Build ignore file
+# Files and directories to exclude from EAS builds
+
+# Development files
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Dependencies (will be installed during build)
+node_modules/
+
+# Build outputs
+dist/
+build/
+.expo/
+
+# Environment files
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Testing
+coverage/
+.nyc_output/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+
+# Temporary files
+tmp/
+temp/
+
+# Legacy/backup files
+*.backup
+*.bak
+*.old
+
+# Web-specific files (not needed for mobile)
+src/App.tsx
+public/
+web-build/
+
+# Development tools
+.claude/

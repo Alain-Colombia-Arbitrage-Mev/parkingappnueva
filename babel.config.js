@@ -3,7 +3,6 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      'react-native-reanimated/plugin',
       [
         'module-resolver',
         {
@@ -13,10 +12,14 @@ module.exports = function (api) {
             '@/components': './src/components',
             '@/hooks': './src/hooks',
             '@/utils': './src/utils',
-            '@/types': './src/types'
-          }
+            '@/types': './src/types',
+            '@/store': './src/store'
+          },
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
         }
-      ]
+      ],
+      // React Native Reanimated plugin must be last
+      'react-native-reanimated/plugin'
     ]
   };
 };

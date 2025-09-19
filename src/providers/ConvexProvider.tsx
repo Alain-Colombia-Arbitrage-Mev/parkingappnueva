@@ -3,8 +3,9 @@ import { ConvexProvider as BaseConvexProvider } from 'convex/react';
 import { ConvexReactClient } from 'convex/react';
 import { setConvexClient } from '../store/integrations/convexIntegration';
 
-// Configurar cliente de Convex
-const convex = new ConvexReactClient(process.env.CONVEX_URL || "https://terrific-starling-996.convex.cloud");
+// Configure Convex client with environment variable
+const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || process.env.CONVEX_URL || "https://terrific-starling-996.convex.cloud";
+const convex = new ConvexReactClient(convexUrl);
 
 interface ConvexProviderProps {
   children: ReactNode;

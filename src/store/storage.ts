@@ -1,11 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { MMKV } from 'react-native-mmkv';
-
-// MMKV instance for high-performance storage (temporarily disabled for build compatibility)
-// const mmkv = new MMKV({
-//   id: 'parkiing-app',
-//   encryptionKey: 'parkiing-encryption-key-2024'
-// });
 
 // Storage keys
 export const STORAGE_KEYS = {
@@ -31,11 +24,10 @@ export interface StorageAdapter {
   getAllKeys: () => Promise<readonly string[]>;
 }
 
-// High-performance storage adapter using AsyncStorage (MMKV temporarily disabled)
+// High-performance storage adapter using AsyncStorage
 export const secureStorage: StorageAdapter = {
   async getItem(key: string): Promise<string | null> {
     try {
-      // return mmkv.getString(key) ?? null;
       return await AsyncStorage.getItem(key);
     } catch (error) {
       console.error('SecureStorage getItem error:', error);
@@ -45,7 +37,6 @@ export const secureStorage: StorageAdapter = {
 
   async setItem(key: string, value: string): Promise<void> {
     try {
-      // mmkv.set(key, value);
       await AsyncStorage.setItem(key, value);
     } catch (error) {
       console.error('SecureStorage setItem error:', error);
@@ -55,7 +46,6 @@ export const secureStorage: StorageAdapter = {
 
   async removeItem(key: string): Promise<void> {
     try {
-      // mmkv.delete(key);
       await AsyncStorage.removeItem(key);
     } catch (error) {
       console.error('SecureStorage removeItem error:', error);
@@ -65,7 +55,6 @@ export const secureStorage: StorageAdapter = {
 
   async clear(): Promise<void> {
     try {
-      // mmkv.clearAll();
       await AsyncStorage.clear();
     } catch (error) {
       console.error('SecureStorage clear error:', error);
@@ -75,7 +64,6 @@ export const secureStorage: StorageAdapter = {
 
   async getAllKeys(): Promise<readonly string[]> {
     try {
-      // return mmkv.getAllKeys();
       return await AsyncStorage.getAllKeys();
     } catch (error) {
       console.error('SecureStorage getAllKeys error:', error);
@@ -132,7 +120,7 @@ export const asyncStorage: StorageAdapter = {
   },
 };
 
-// Main storage instance (defaults to MMKV, falls back to AsyncStorage)
+// Main storage instance (uses AsyncStorage)
 let storage: StorageAdapter = secureStorage;
 
 // Storage utility functions
