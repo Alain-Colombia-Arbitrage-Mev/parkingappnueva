@@ -1,0 +1,18 @@
+Running Gradle task 'assembleDebug'...                          
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:parseDebugLocalResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.ParseLibraryResourcesTask$ParseResourcesRunnable
+   > '/Volumes/ssd1/Handyman Auction Mobile App/flutter_app/build/app/intermediates/packaged_res/debug/packageDebugResources/._drawable-v21' is not a directory
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 46s
+Running Gradle task 'assembleDebug'...                             47,1s
+Gradle task assembleDebug failed with exit code 1
